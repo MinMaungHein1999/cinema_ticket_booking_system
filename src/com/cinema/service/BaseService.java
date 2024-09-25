@@ -10,12 +10,13 @@ import com.cinema.dao.AbstractDao;
 
 public abstract class BaseService<T> {
 	protected static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	public AbstractDao abstractDao;
+	public AbstractDao<T> abstractDao;
+	
 	public abstract T getEntityObject(int id);
 	public abstract String getEntity();
 	public abstract void register() throws SQLException, IOException;
 	
-	public BaseService(AbstractDao abstractDao) {
+	public BaseService(AbstractDao<T> abstractDao) {
 		this.abstractDao = abstractDao;
 	}
 	

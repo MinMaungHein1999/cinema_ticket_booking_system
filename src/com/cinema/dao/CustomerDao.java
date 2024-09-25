@@ -29,6 +29,7 @@ public class CustomerDao extends AbstractDao<Customer> {
 					Customer customer = new Customer();
 					customer.setId(resultSet.getInt("id"));
 					customer.setName(resultSet.getString("name"));
+					this.connectionFactory.closeConnection();
 					return customer;
 				}
 			}
@@ -49,9 +50,11 @@ public class CustomerDao extends AbstractDao<Customer> {
 					customer.setId(resultSet.getInt("id"));
 					customer.setName(resultSet.getString("name"));
 					customers.add(customer);
+					
 				}
 			}
 		}
+		this.connectionFactory.closeConnection();
 		return customers;
 	}
 
@@ -63,6 +66,7 @@ public class CustomerDao extends AbstractDao<Customer> {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, customer.getName());
 			preparedStatement.executeUpdate();
+			this.connectionFactory.closeConnection();
 		
 	}
 
@@ -74,6 +78,7 @@ public class CustomerDao extends AbstractDao<Customer> {
 		PreparedStatement preparedStatement = connection.prepareStatement(query);
 		preparedStatement.setInt(1, customer.getId());
 		preparedStatement.executeUpdate();
+		this.connectionFactory.closeConnection();
 		
 	}
 

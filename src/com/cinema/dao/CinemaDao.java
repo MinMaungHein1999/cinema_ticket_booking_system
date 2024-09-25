@@ -30,6 +30,7 @@ public class CinemaDao extends AbstractDao<Cinema>{
 			cinema.setId(resultSet.getInt("id"));
 			cinema.setName(resultSet.getString("name"));
 			cinema.setAddress(resultSet.getString("address"));
+			this.connectionFactory.closeConnection();
 			return cinema;
 		}
 		return null;
@@ -48,6 +49,7 @@ public class CinemaDao extends AbstractDao<Cinema>{
 			cinema.setName(resultSet.getString("name"));
 			cinema.setAddress(resultSet.getString("address"));
 			cinemas.add(cinema);
+			this.connectionFactory.closeConnection();
 		}
 		
 		return cinemas;
@@ -61,7 +63,7 @@ public class CinemaDao extends AbstractDao<Cinema>{
 		preparedStatement.setString(1, entity.getName());
 		preparedStatement.setString(2, entity.getAddress());
 		preparedStatement.executeUpdate();
-		
+		this.connectionFactory.closeConnection();
 	}
 
 	@Override
@@ -71,6 +73,7 @@ public class CinemaDao extends AbstractDao<Cinema>{
 		PreparedStatement preparedStatement = connection.prepareStatement(query);
 		preparedStatement.setInt(1, entity.getId());
 		preparedStatement.executeUpdate();
+		this.connectionFactory.closeConnection();
 	}
 
 }

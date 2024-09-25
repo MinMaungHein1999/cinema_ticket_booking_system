@@ -7,76 +7,80 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cinema.database.PgSqlConnectionFactory;
-import com.cinema.model.Theatre;
+import org.postgresql.util.PGInterval;
 
-public class TheatreDao extends AbstractDao<Theatre> {
+import com.cinema.database.PgSqlConnectionFactory;
+import com.cinema.model.Movie;
+
+public class MovieDao extends AbstractDao<Movie>{
 	
 	private PgSqlConnectionFactory connectionFactory;
-	private CinemaDao cinemaDao;
 	
-	public TheatreDao() {
+	public MovieDao() {
 		this.connectionFactory = new PgSqlConnectionFactory();
-		this.cinemaDao = new CinemaDao();
 	}
 
 	@Override
-	public Theatre findbyId(int id) throws SQLException {
-		String query = "select * from theatres where id = ?";
+	public Movie findbyId(int id) throws SQLException {
+		String query = "select * from movies where id = ?";
 		Connection connection = this.connectionFactory.createConnection();
 		PreparedStatement preparedStatement = connection.prepareStatement(query);
 		preparedStatement.setInt(1, id);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		if(resultSet.next()) {
-			Theatre threatre = new Theatre();
-			threatre.setId(resultSet.getInt("id"));
-			threatre.setName(resultSet.getString("name"));
-			int cinema_id = resultSet.getInt("cinema_id");
-			threatre.setCinema(this.cinemaDao.findbyId(cinema_id));
-			return threatre;
+			Movie movie = new Movie();
+			movie.setId(resultSet.getInt("id"));
+			movie.setTitle(resultSet.getString("title"));
+			PGInterval duration = (PGInterval) resultSet.getObject("duration");
+			movie.setDuration(duration.getHours() + "hr : "+ duration.getMinutes()+ " min");
+			this.connectionFactory.closeConnection();
+			return movie;
 		}
-		this.connectionFactory.closeConnection();
+		
 		return null;
 	}
 
 	@Override
-	public List<Theatre> getAll() throws SQLException {
-		String query = "select * from theatres";
-		List<Theatre> threaters = new ArrayList<>();
+	public List<Movie> getAll() throws SQLException {
+		String query = "select * from movies";
+		List<Movie> movies = new ArrayList<>();
 		Connection connection = this.connectionFactory.createConnection();
 		PreparedStatement preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		while(resultSet.next()) {
-			Theatre threatre = new Theatre();
-			threatre.setId(resultSet.getInt("id"));
-			threatre.setName(resultSet.getString("name"));
-			int cinema_id = resultSet.getInt("cinema_id");
-			threatre.setCinema(this.cinemaDao.findbyId(cinema_id));
-			threaters.add(threatre);
+			Movie movie = new Movie();
+			movie.setId(resultSet.getInt("id"));
+			movie.setTitle(resultSet.getString("title"));
+			PGInterval duration = (PGInterval) resultSet.getObject("duration");
+			movie.setDuration(duration.getHours() + "hr : "+ duration.getMinutes()+ " min");
+			movies.add(movie);
 		}
 		this.connectionFactory.closeConnection();
-		return threaters;
+		return movies;
 	}
 
 	@Override
-	public void create(Theatre threatre) throws SQLException {
-		String query = "insert into theatres (name, cinema_id) values (?, ?)";
+	public void create(Movie movie) throws SQLException {
+		String query = "insert into movies (title, duration) values (?, ?)";
+		
 		Connection connection = this.connectionFactory.createConnection();
 		PreparedStatement preparedStatement = connection.prepareStatement(query);
-		preparedStatement.setString(1, threatre.getName());
-		preparedStatement.setInt(2, threatre.getCinema().getId());
+		preparedStatement.setString(1, movie.getTitle());
+		preparedStatement.setString(2, movie.getDuration());
 		preparedStatement.executeUpdate();
 		this.connectionFactory.closeConnection();
+		
 	}
 
 	@Override
-	public void delete(Theatre theatre) throws SQLException {
-		String query = "delete from theatres where id = ?";
+	public void delete(Movie movie) throws SQLException {
+		String query = "delete from movies where id = ?";
 		Connection connection = this.connectionFactory.createConnection();
 		PreparedStatement preparedStatement = connection.prepareStatement(query);
-		preparedStatement.setInt(1, theatre.getId());
+		preparedStatement.setInt(1, movie.getId());
 		preparedStatement.executeUpdate();
 		this.connectionFactory.closeConnection();
+		
 	}
 
 }
