@@ -51,8 +51,8 @@ public class MovieDao extends AbstractDao<Movie>{
 			Movie movie = new Movie();
 			movie.setId(resultSet.getInt("id"));
 			movie.setTitle(resultSet.getString("title"));
-			PGInterval duration = (PGInterval) resultSet.getObject("duration");
-			movie.setDuration(duration.getHours() + "hr : "+ duration.getMinutes()+ " min");
+			String duration = resultSet.getString("duration");
+			movie.setDuration(duration);		
 			movies.add(movie);
 		}
 		this.connectionFactory.closeConnection();
