@@ -13,13 +13,10 @@ public class SeatService extends BaseService<Seat>{
 	
 	private static AbstractDao<Seat> seatDao = new SeatDao();
 	private TheatreService theatreService;
-	private TheatreDao theatreDao;
 	
 	public SeatService() {
 		super(seatDao);
-		this.abstractDao = new SeatDao();
-		this.theatreDao = new TheatreDao();
-		this.theatreService = new TheatreService(theatreDao);
+		this.theatreService = new TheatreService();
 		
 	}
 
@@ -47,7 +44,7 @@ public class SeatService extends BaseService<Seat>{
 		seat.setTitle(name);
 		theatre.setId(theatre_id);
 		seat.setTheatre(theatre);
-		this.abstractDao.create(seat);
+		seatDao.create(seat);
 		
 	}
 

@@ -5,14 +5,14 @@ import java.sql.SQLException;
 
 import com.cinema.dao.AbstractDao;
 import com.cinema.model.Customer;
+import com.cinema.dao.CustomerDao;
 
 public class CustomerService extends BaseService<Customer>{
 	
-	private AbstractDao customerDao;
+	private static AbstractDao<Customer> customerDao = new CustomerDao();
 
-	public CustomerService(AbstractDao customerDao) {
+	public CustomerService() {
 		super(customerDao);
-		this.customerDao = customerDao;
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class CustomerService extends BaseService<Customer>{
 		String name = br.readLine();
 		Customer customer = new Customer();
 		customer.setName(name);
-		this.customerDao.create(customer);
+		customerDao.create(customer);
 	}
 
 }

@@ -10,7 +10,7 @@ import com.cinema.dao.AbstractDao;
 
 public abstract class BaseService<T> {
 	protected static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	public AbstractDao<T> abstractDao;
+	private AbstractDao<T> abstractDao;
 	
 	public abstract T getEntityObject(int id);
 	public abstract String getEntity();
@@ -76,6 +76,12 @@ public abstract class BaseService<T> {
 		int id = Integer.parseInt(br.readLine());
 		T entity = (T) this.abstractDao.findbyId(id);
 		System.out.println(entity);
+	}
+	public AbstractDao<T> getAbstractDao() {
+		return abstractDao;
+	}
+	public void setAbstractDao(AbstractDao<T> abstractDao) {
+		this.abstractDao = abstractDao;
 	}
 	
 	

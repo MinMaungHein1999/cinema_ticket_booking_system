@@ -2,15 +2,15 @@ package com.cinema.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import com.cinema.dao.*;
 import com.cinema.dao.AbstractDao;
 import com.cinema.model.Cinema;
 
 public class CinemaService extends BaseService<Cinema>{
-	private AbstractDao cinemaDao;
+	private static AbstractDao<Cinema> cinemaDao = new CinemaDao();
 	
-	public CinemaService(AbstractDao cinemaDao) {
+	public CinemaService() {
 		super(cinemaDao);
-		this.cinemaDao = cinemaDao;
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class CinemaService extends BaseService<Cinema>{
 		System.out.print("Enter Cinema Address: ");
 		String address = br.readLine();
 		cinema.setAddress(address);
-		this.cinemaDao.create(cinema);
+		cinemaDao.create(cinema);
 	}
 
 	

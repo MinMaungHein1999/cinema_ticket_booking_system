@@ -4,20 +4,17 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import com.cinema.dao.AbstractDao;
-import com.cinema.dao.CinemaDao;
+import com.cinema.dao.TheatreDao;
 import com.cinema.model.Cinema;
 import com.cinema.model.Theatre;
 
 public class TheatreService extends BaseService<Theatre>{
-	private CinemaDao cinemaDao;
 	private CinemaService cinemaService;
-	private AbstractDao theatreDao;
+	private static AbstractDao<Theatre> theatreDao = new TheatreDao();
 	
-	public TheatreService(AbstractDao abstractDao) {
-		super(abstractDao);
-		this.theatreDao = abstractDao;
-		this.cinemaDao = new CinemaDao();
-		this.cinemaService = new CinemaService(this.cinemaDao);
+	public TheatreService() {
+		super(theatreDao);
+		this.cinemaService = new CinemaService();
 	}
 
 	@Override
@@ -45,7 +42,6 @@ public class TheatreService extends BaseService<Theatre>{
 		
 		theatre.setName(name);
 		theatre.setCinema(cinema);
-		this.theatreDao.create(theatre);
 	}
 
 }

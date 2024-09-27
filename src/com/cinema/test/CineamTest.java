@@ -19,9 +19,6 @@ import com.cinema.service.TheatreService;
 
 public class CineamTest {
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	static CustomerDao customerDao = new CustomerDao();
-	static CinemaDao cinemaDao = new CinemaDao();
-	static TheatreDao theatreDao = new TheatreDao();
 
 	public static void actionMenu() {
 		System.out.println("Choose an action:");
@@ -87,18 +84,18 @@ public class CineamTest {
 	}
 
 	private static void callTheatreService() throws NumberFormatException, IOException, SQLException {
-		TheatreService theatreService = new TheatreService(theatreDao);
+		TheatreService theatreService = new TheatreService();
 		theatreService.call();
 	}
 
 	private static void callCinemaService() throws NumberFormatException, IOException, SQLException {
-		CinemaService cinemaService = new CinemaService(cinemaDao);
+		CinemaService cinemaService = new CinemaService();
 		cinemaService.call();
 		
 	}
 
 	private static void callCustomerService() throws NumberFormatException, IOException, SQLException {
-		CustomerService customerService = new CustomerService(customerDao);
+		CustomerService customerService = new CustomerService();
 		customerService.call();
 	}
 
