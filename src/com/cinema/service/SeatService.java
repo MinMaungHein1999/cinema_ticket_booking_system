@@ -21,13 +21,6 @@ public class SeatService extends BaseService<Seat>{
 	}
 
 	@Override
-	public Seat getEntityObject(int id) {
-		Seat seat = new Seat();
-		seat.setId(id);
-		return seat;
-	}
-
-	@Override
 	public String getEntity() {
 		return "Seat";
 	}

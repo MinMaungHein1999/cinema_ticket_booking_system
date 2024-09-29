@@ -13,12 +13,6 @@ public class CinemaService extends BaseService<Cinema>{
 		super(cinemaDao);
 	}
 
-	@Override
-	public Cinema getEntityObject(int id) {
-		Cinema cinema = new Cinema();
-		cinema.setId(id);
-		return cinema;
-	}
 
 	@Override
 	public String getEntity() {

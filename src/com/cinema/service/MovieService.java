@@ -17,13 +17,6 @@ public class MovieService extends BaseService<Movie>{
 	}
 
 	@Override
-	public Movie getEntityObject(int id) {
-		Movie movie = new Movie();
-		movie.setId(id);
-		return movie;
-	}
-
-	@Override
 	public String getEntity() {
 		return "Movie";
 	}

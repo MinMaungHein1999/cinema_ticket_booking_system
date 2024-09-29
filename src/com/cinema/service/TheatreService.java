@@ -18,13 +18,6 @@ public class TheatreService extends BaseService<Theatre>{
 	}
 
 	@Override
-	public Theatre getEntityObject(int id) {
-		Theatre theatre = new Theatre();
-		theatre.setId(id);
-		return theatre;
-	}
-
-	@Override
 	public String getEntity() {
 		return "Theatre";
 	}

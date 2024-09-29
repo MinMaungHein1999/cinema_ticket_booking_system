@@ -11,8 +11,6 @@ import com.cinema.dao.AbstractDao;
 public abstract class BaseService<T> {
 	protected static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	private AbstractDao<T> abstractDao;
-	
-	public abstract T getEntityObject(int id);
 	public abstract String getEntity();
 	public abstract void register() throws SQLException, IOException;
 	
@@ -59,8 +57,7 @@ public abstract class BaseService<T> {
 	private void destory() throws NumberFormatException, IOException, SQLException {
 		System.out.print("Enter "+getEntity()+" Id : ");
 		int id = Integer.parseInt(br.readLine());
-		T entity = getEntityObject(id);
-		this.abstractDao.delete(entity);
+		this.abstractDao.delete(id);
 	}
 
 	public void getAll() throws SQLException {

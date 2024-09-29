@@ -21,62 +21,29 @@ public class TheatreDao extends AbstractDao<Theatre> {
 	}
 
 	@Override
-	public Theatre findbyId(int id) throws SQLException {
-		String query = "select * from theatres where id = ?";
-		Connection connection = this.connectionFactory.createConnection();
-		PreparedStatement preparedStatement = connection.prepareStatement(query);
-		preparedStatement.setInt(1, id);
-		ResultSet resultSet = preparedStatement.executeQuery();
-		if(resultSet.next()) {
+	public String getTableName() {
+		return "theatres";
+	}
+
+	@Override
+	public Theatre convertToObject(ResultSet resultSet) throws SQLException {
+		
 			Theatre threatre = new Theatre();
 			threatre.setId(resultSet.getInt("id"));
 			threatre.setName(resultSet.getString("name"));
 			int cinema_id = resultSet.getInt("cinema_id");
 			threatre.setCinema(this.cinemaDao.findbyId(cinema_id));
 			return threatre;
-		}
-		this.connectionFactory.closeConnection();
-		return null;
 	}
 
 	@Override
-	public List<Theatre> getAll() throws SQLException {
-		String query = "select * from theatres";
-		List<Theatre> threaters = new ArrayList<>();
-		Connection connection = this.connectionFactory.createConnection();
-		PreparedStatement preparedStatement = connection.prepareStatement(query);
-		ResultSet resultSet = preparedStatement.executeQuery();
-		while(resultSet.next()) {
-			Theatre threatre = new Theatre();
-			threatre.setId(resultSet.getInt("id"));
-			threatre.setName(resultSet.getString("name"));
-			int cinema_id = resultSet.getInt("cinema_id");
-			threatre.setCinema(this.cinemaDao.findbyId(cinema_id));
-			threaters.add(threatre);
-		}
-		this.connectionFactory.closeConnection();
-		return threaters;
+	public String getInsertValues() {
+		return "(name, cinema_id) values (?, ?)";
 	}
 
 	@Override
-	public void create(Theatre threatre) throws SQLException {
-		String query = "insert into theatres (name, cinema_id) values (?, ?)";
-		Connection connection = this.connectionFactory.createConnection();
-		PreparedStatement preparedStatement = connection.prepareStatement(query);
-		preparedStatement.setString(1, threatre.getName());
-		preparedStatement.setInt(2, threatre.getCinema().getId());
-		preparedStatement.executeUpdate();
-		this.connectionFactory.closeConnection();
+	public void setParameters(PreparedStatement preparedStatement, Theatre entity) throws SQLException {
+		preparedStatement.setString(1, entity.getName());
+		preparedStatement.setInt(2, entity.getCinema().getId());
 	}
-
-	@Override
-	public void delete(Theatre theatre) throws SQLException {
-		String query = "delete from theatres where id = ?";
-		Connection connection = this.connectionFactory.createConnection();
-		PreparedStatement preparedStatement = connection.prepareStatement(query);
-		preparedStatement.setInt(1, theatre.getId());
-		preparedStatement.executeUpdate();
-		this.connectionFactory.closeConnection();
-	}
-
 }

@@ -19,67 +19,27 @@ public class CustomerDao extends AbstractDao<Customer> {
 	}
 
 	@Override
-	public Customer findbyId(int id) throws SQLException {
-		String query = "select * from customers where id = ?";
-		try(Connection connection = this.connectionFactory.createConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(query)){
-			preparedStatement.setInt(1, id);
-			try(ResultSet resultSet = preparedStatement.executeQuery()){
-				if(resultSet.next()) {
-					Customer customer = new Customer();
-					customer.setId(resultSet.getInt("id"));
-					customer.setName(resultSet.getString("name"));
-					this.connectionFactory.closeConnection();
-					return customer;
-				}
-			}
-
-		}
-		return null;
+	public String getTableName() {
+		return "customers";
 	}
 
 	@Override
-	public List<Customer> getAll() throws SQLException {
-		String query = "select * from customers";
-		List<Customer> customers = new ArrayList<>();
-		try(Connection connection = this.connectionFactory.createConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(query)){
-			try(ResultSet resultSet = preparedStatement.executeQuery()){
-				while(resultSet.next()) {
-					Customer customer  = new Customer();
-					customer.setId(resultSet.getInt("id"));
-					customer.setName(resultSet.getString("name"));
-					customers.add(customer);
-					
-				}
-			}
-		}
-		this.connectionFactory.closeConnection();
-		return customers;
-	}
-
-	@Override
-	public void create(Customer customer) throws SQLException {
-		String query = "insert into customers (name) values (?)";
-		
-			Connection connection = this.connectionFactory.createConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, customer.getName());
-			preparedStatement.executeUpdate();
-			this.connectionFactory.closeConnection();
+	public Customer convertToObject(ResultSet resultSet) throws SQLException {
+			Customer customer = new Customer();
+			customer.setId(resultSet.getInt("id"));
+			customer.setName(resultSet.getString("name"));
+			return customer;
 		
 	}
 
 	@Override
-	public void delete(Customer customer) throws SQLException {
-		String query = "delete from customers where id = ?";
-		
-		Connection connection = this.connectionFactory.createConnection();
-		PreparedStatement preparedStatement = connection.prepareStatement(query);
-		preparedStatement.setInt(1, customer.getId());
-		preparedStatement.executeUpdate();
-		this.connectionFactory.closeConnection();
-		
+	public String getInsertValues() {
+		return "(name) values (?)";
+	}
+
+	@Override
+	public void setParameters(PreparedStatement preparedStatement, Customer entity) throws SQLException {
+		preparedStatement.setString(1, entity.getName());
 	}
 
 }

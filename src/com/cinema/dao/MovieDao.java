@@ -21,64 +21,29 @@ public class MovieDao extends AbstractDao<Movie>{
 	}
 
 	@Override
-	public Movie findbyId(int id) throws SQLException {
-		String query = "select * from movies where id = ?";
-		Connection connection = this.connectionFactory.createConnection();
-		PreparedStatement preparedStatement = connection.prepareStatement(query);
-		preparedStatement.setInt(1, id);
-		ResultSet resultSet = preparedStatement.executeQuery();
-		if(resultSet.next()) {
+	public String getTableName() {
+		return "movies";
+	}
+
+	@Override
+	public Movie convertToObject(ResultSet resultSet) throws SQLException {
+	
 			Movie movie = new Movie();
 			movie.setId(resultSet.getInt("id"));
 			movie.setTitle(resultSet.getString("title"));
 			movie.setDuration(resultSet.getString("duration"));
-			this.connectionFactory.closeConnection();
 			return movie;
-		}
-		
-		return null;
 	}
 
 	@Override
-	public List<Movie> getAll() throws SQLException {
-		String query = "select * from movies";
-		List<Movie> movies = new ArrayList<>();
-		Connection connection = this.connectionFactory.createConnection();
-		PreparedStatement preparedStatement = connection.prepareStatement(query);
-		ResultSet resultSet = preparedStatement.executeQuery();
-		while(resultSet.next()) {
-			Movie movie = new Movie();
-			movie.setId(resultSet.getInt("id"));
-			movie.setTitle(resultSet.getString("title"));
-			String duration = resultSet.getString("duration");
-			movie.setDuration(duration);		
-			movies.add(movie);
-		}
-		this.connectionFactory.closeConnection();
-		return movies;
+	public String getInsertValues() {
+		return "(title, duration) values (?, ?)";
 	}
 
 	@Override
-	public void create(Movie movie) throws SQLException {
-		String query = "insert into movies (title, duration) values (?, ?)";
-		
-		Connection connection = this.connectionFactory.createConnection();
-		PreparedStatement preparedStatement = connection.prepareStatement(query);
-		preparedStatement.setString(1, movie.getTitle());
-		preparedStatement.setString(2, movie.getDuration());
-		preparedStatement.executeUpdate();
-		this.connectionFactory.closeConnection();
-		
-	}
-
-	@Override
-	public void delete(Movie movie) throws SQLException {
-		String query = "delete from movies where id = ?";
-		Connection connection = this.connectionFactory.createConnection();
-		PreparedStatement preparedStatement = connection.prepareStatement(query);
-		preparedStatement.setInt(1, movie.getId());
-		preparedStatement.executeUpdate();
-		this.connectionFactory.closeConnection();
+	public void setParameters(PreparedStatement preparedStatement, Movie entity) throws SQLException {
+		preparedStatement.setString(1, entity.getTitle());
+		preparedStatement.setString(2, entity.getDuration());
 		
 	}
 

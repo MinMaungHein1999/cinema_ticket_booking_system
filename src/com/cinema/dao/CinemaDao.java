@@ -19,61 +19,29 @@ public class CinemaDao extends AbstractDao<Cinema>{
 	}
 
 	@Override
-	public Cinema findbyId(int id) throws SQLException {
-		String query = "select * from cinemas where id = ?";
-		Connection connection = this.connectionFactory.createConnection();
-		PreparedStatement preparedStatement = connection.prepareStatement(query);
-		preparedStatement.setInt(1, id);
-		ResultSet resultSet = preparedStatement.executeQuery();
-		if(resultSet.next()) {
-			Cinema cinema = new Cinema();
-			cinema.setId(resultSet.getInt("id"));
-			cinema.setName(resultSet.getString("name"));
-			cinema.setAddress(resultSet.getString("address"));
-			this.connectionFactory.closeConnection();
-			return cinema;
-		}
-		return null;
+	public String getTableName() {
+		return "cinemas";
 	}
 
 	@Override
-	public List<Cinema> getAll() throws SQLException {
-		String query = "select * from cinemas";
-		List<Cinema> cinemas = new ArrayList<>();
-		Connection connection = this.connectionFactory.createConnection();
-		PreparedStatement preparedStatement = connection.prepareStatement(query);
-		ResultSet resultSet = preparedStatement.executeQuery();
-		while(resultSet.next()) {
-			Cinema cinema = new Cinema();
-			cinema.setId(resultSet.getInt("id"));
-			cinema.setName(resultSet.getString("name"));
-			cinema.setAddress(resultSet.getString("address"));
-			cinemas.add(cinema);
-			this.connectionFactory.closeConnection();
-		}
+	public Cinema convertToObject(ResultSet resultSet) throws SQLException {
+		Cinema cinema = new Cinema();
 		
-		return cinemas;
+			cinema.setId(resultSet.getInt("id"));
+			cinema.setName(resultSet.getString("name"));
+			cinema.setAddress(resultSet.getString("address"));
+			return cinema;
 	}
 
 	@Override
-	public void create(Cinema entity) throws SQLException {
-		String query = "insert into cinemas (name, address) values (?, ?)";
-		Connection connection = this.connectionFactory.createConnection();
-		PreparedStatement preparedStatement = connection.prepareStatement(query);
+	public String getInsertValues() {
+		return "(name, address) values (?, ?)";
+	}
+
+	@Override
+	public void setParameters(PreparedStatement preparedStatement, Cinema entity) throws SQLException {
 		preparedStatement.setString(1, entity.getName());
 		preparedStatement.setString(2, entity.getAddress());
-		preparedStatement.executeUpdate();
-		this.connectionFactory.closeConnection();
-	}
-
-	@Override
-	public void delete(Cinema entity) throws SQLException {
-		String query = "delete from cinemas where id = ?";
-		Connection connection = this.connectionFactory.createConnection();
-		PreparedStatement preparedStatement = connection.prepareStatement(query);
-		preparedStatement.setInt(1, entity.getId());
-		preparedStatement.executeUpdate();
-		this.connectionFactory.closeConnection();
 	}
 
 }

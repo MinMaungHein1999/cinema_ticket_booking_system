@@ -15,12 +15,6 @@ public class CustomerService extends BaseService<Customer>{
 		super(customerDao);
 	}
 
-	@Override
-	public Customer getEntityObject(int id) {
-		Customer customer = new Customer();
-		customer.setId(id);
-		return customer;
-	}
 
 	@Override
 	public String getEntity() {

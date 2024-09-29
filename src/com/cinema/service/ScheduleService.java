@@ -23,13 +23,6 @@ public class ScheduleService extends BaseService<Schedule> {
 	}
 
 	@Override
-	public Schedule getEntityObject(int id) {
-		Schedule schedule = new Schedule();
-		schedule.setId(id);
-		return schedule;
-	}
-
-	@Override
 	public String getEntity() {
 		return "Schedule";
 	}
