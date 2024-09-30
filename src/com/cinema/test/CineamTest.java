@@ -16,6 +16,7 @@ import com.cinema.service.MovieService;
 import com.cinema.service.ScheduleService;
 import com.cinema.service.SeatService;
 import com.cinema.service.TheatreService;
+import com.cinema.service.TicketService;
 
 public class CineamTest {
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -28,7 +29,8 @@ public class CineamTest {
 		System.out.println("4: Seat Actions ");
 		System.out.println("5: Movie Actions ");
 		System.out.println("6: Schedule Actions ");
-		System.out.println("7: Exit");
+		System.out.println("7: Ticket Actions ");
+		System.out.println("8: Exit");
 	}
 	
 	public static void main(String[] args) throws SQLException, NumberFormatException, IOException {
@@ -58,12 +60,20 @@ public class CineamTest {
 				callScheduleService();
 				break;
 			case 7:
+				callTicketService();
+				break;
+			case 8:
 				exit = false;
 				System.out.println("Exiting the application...");
 				break;
 			}
 		} while (exit);
 
+	}
+
+	private static void callTicketService() throws NumberFormatException, IOException, SQLException {
+		TicketService ticketService = new TicketService();
+		ticketService.call();
 	}
 
 	private static void callScheduleService() throws NumberFormatException, IOException, SQLException {
